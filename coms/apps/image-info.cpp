@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
    if ( info.open(std::string(argv[1])) )
    {
 	std::string s;
-	info.setJson(false);
+	info.setJson(true);
 	info.setShowdetails(false);
 	info.setMulti(true);
 	info.setOmardb(true);

@@ -557,7 +557,6 @@ std::string oms::VideoInfo::getInfo() const
 	 // Close and re-open as PTS/DTS discontinuities are causing rewind/seek to work unreliably for MPEG-TS dumps
 	 thePrivateData->thePredatorVideo->close();
 	 thePrivateData->thePredatorVideo->open(thePrivateData->theFilename);
-         // RPALKO - replaced 1 line with everything to END RPALKO
          //ossim_uint32 idx = 0;
          // safer to rewind
          geos::geom::Geometry* composite = 0;

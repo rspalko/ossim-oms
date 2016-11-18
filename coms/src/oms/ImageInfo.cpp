@@ -592,13 +592,13 @@ std::string oms::ImageInfo::getInfo() const
 	hasKWL = true;
       }
 
-      if (json) result += "{";
+      if (json && !omardb) result += "{";
       if (showsummary || !showdetails)
       {
 	
         if (pretty && json) result += "\n\t";
         if (showdetails && json) result += "\"summary\": {";
-        if (1)
+        if (1 && !omardb)
         {
           writeJsonKVP(result, "name", thePrivateData->theFilename, true, 2, path);
           writeJsonKVP(result, "format", thePrivateData->formatName(), true, 2, path);
@@ -613,7 +613,7 @@ std::string oms::ImageInfo::getInfo() const
          appendMetadataDetails(result, detailsKWL);
       }
       if (pretty && json) result += "\n";
-      if (json) result += "}";
+      if (json && !omardb) result += "}";
       if (pretty && json) result += "\n";
    }
    return result;
@@ -668,8 +668,8 @@ void oms::ImageInfo::appendRasterEntry(std::string& outputString, const ossimKey
      if (entry && json) outputString += ",";
      if (multi && pretty && json) outputString += "\n\t\t\t";
      if (multi && json) outputString += "{";
-     if (multi && pretty && json) outputString += "\n\t\t\t\t";
-     if (multi && json) outputString += "\"image\": {";
+     //if (multi && pretty && json) outputString += "\n\t\t\t\t";
+     //if (multi && json) outputString += "{";
    
      ossimIrect rect = thePrivateData->theImageHandler->getBoundingRect();
    //outputString += indentation + "<RasterEntry>" + separator;
@@ -691,8 +691,8 @@ void oms::ImageInfo::appendRasterEntry(std::string& outputString, const ossimKey
      appendGeometryInformation(outputString, indent, path);
      appendRasterEntryDateTime(outputString, indent,  path);
      appendNormalizedMetadata(outputString, kwl, indent, path);
-     if (multi && pretty && json) outputString += "\n\t\t\t\t";
-     if (multi && json) outputString += "}";
+     //if (multi && pretty && json) outputString += "\n\t\t\t\t";
+     //if (multi && json) outputString += "}";
      if (multi && pretty && json) outputString += "\n\t\t\t";
      if (multi && json) outputString += "}";
    }
@@ -705,7 +705,7 @@ void oms::ImageInfo::appendRasterEntries(std::string& outputString, const ossimK
    thePrivateData->theImageHandler->getNumberOfEntries();
    ossim_uint32 idx = 0;
    if (multi && pretty && json) outputString += "\n\t\t";
-   if (multi && json) outputString += "\"images\": [";
+   if (multi && json) outputString += "[";
    for (idx = 0; idx < numberOfEntries; ++idx)
    {
       if(thePrivateData->theImageHandler->setCurrentEntry(idx))
@@ -841,12 +841,6 @@ void oms::ImageInfo::appendBitDepthAndDataType(std::string& outputString,
       case OSSIM_USHORT11:
       {
          bits = 11;
-         dataType = "uint";
-         break;
-      }
-      case OSSIM_USHORT12:
-      {
-         bits = 12;
          dataType = "uint";
          break;
       }
