@@ -1278,7 +1278,7 @@ void oms::ImageInfo::appendRasterEntryDateTime(std::string& outputString,
 {
    ossimRefPtr<ossimProperty> prop;
    ossimString dateValue = "";
-   convertIdatimToXmlDate(
+   dateValue = convertIdatimToXmlDate(
                           thePrivateData->theImageHandler->getPropertyValueAsString(
                                                                                     "IDATIM"));
    
