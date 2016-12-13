@@ -929,7 +929,7 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
       lr.changeDatum(wgs84.datum());
       ll.changeDatum(wgs84.datum());
       
-      groundGeometry += ("POLYGON((" + ossimString::toString(ul.lond()) + " "
+      groundGeometry += ("MULTIPOLYGON(((" + ossimString::toString(ul.lond()) + " "
                          + ossimString::toString(ul.latd()) + ","
                          + ossimString::toString(ur.lond()) + " "
                          + ossimString::toString(ur.latd()) + ","
@@ -938,9 +938,9 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
                          + ossimString::toString(ll.lond()) + " "
                          + ossimString::toString(ll.latd()) + ","
                          + ossimString::toString(ul.lond()) + " "
-                         + ossimString::toString(ul.latd()) + "))");
+                         + ossimString::toString(ul.latd()) + ")))");
 
-      groundGeometryCounterClockwise += ("POLYGON((" + ossimString::toString(ul.lond()) + " "
+      groundGeometryCounterClockwise += ("MULTIPOLYGON(((" + ossimString::toString(ul.lond()) + " "
                          + ossimString::toString(ul.latd()) + ","
                          + ossimString::toString(ll.lond()) + " "
                          + ossimString::toString(ll.latd()) + ","
@@ -949,7 +949,7 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
                          + ossimString::toString(ur.lond()) + " "
                          + ossimString::toString(ur.latd()) + ","
                          + ossimString::toString(ul.lond()) + " "
-                         + ossimString::toString(ul.latd()) + "))");
+                         + ossimString::toString(ul.latd()) + ")))");
 
       groundShape += "\n\t\t\"groundShape\" : { \"type\" : \"polygon\", \"coordinates\" : [ [ [" + ossimString::toString(ul.lond()) + ", " + ossimString::toString(ul.latd()) + "], ["
 			+ ossimString::toString(ur.lond()) + ", " + ossimString::toString(ur.latd()) + "], ["
@@ -972,8 +972,8 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
 
       if (1) 
       {
-        ossimString tiePoints = "";
-        tiePoints += ("POLYGON((" + ossimString::toString(rect.ul().x) + " "
+        ossimString tiePointsPoly = "";
+        tiePointsPoly += ("POLYGON((" + ossimString::toString(rect.ul().x) + " "
                          + ossimString::toString(rect.ul().y) + ","
                          + ossimString::toString(rect.ur().x) + " "
                          + ossimString::toString(rect.ur().y) + ","
@@ -983,8 +983,8 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
                          + ossimString::toString(rect.ll().y) + ","
                          + ossimString::toString(rect.ul().y) + " "
                          + ossimString::toString(rect.ul().x) + "))");
-        ossimString tiePointsCounterClockwise = "";
-        tiePointsCounterClockwise += ("POLYGON((" + ossimString::toString(rect.ul().x) + " "
+        ossimString tiePointsCounterClockwisePoly = "";
+        tiePointsCounterClockwisePoly += ("POLYGON((" + ossimString::toString(rect.ul().x) + " "
                          + ossimString::toString(rect.ul().y) + ","
                          + ossimString::toString(rect.ll().x) + " "
                          + ossimString::toString(rect.ll().y) + ","
@@ -995,8 +995,29 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
                          + ossimString::toString(rect.ul().y) + " "
                          + ossimString::toString(rect.ul().x) + "))");
 
-        writeJsonKVP(outputString, "tiePoints", tiePoints, true, indent, path);
-	writeJsonKVP(outputString, "tiePointsCounterClockwise", tiePointsCounterClockwise, true, indent, path);	
+	ossimString tiePoints = "";
+        tiePoints += "<TiePointSet version='1'>";
+        tiePoints += "<Image>";
+        tiePoints += "<coordinates>";
+        tiePoints += ossimString::toString(rect.ul().x).string() + "," + ossimString::toString(rect.ul().y).string() + " ";
+        tiePoints += ossimString::toString(rect.ur().x).string() + "," + ossimString::toString(rect.ur().y).string() + " ";
+        tiePoints += ossimString::toString(rect.lr().x).string() + "," + ossimString::toString(rect.lr().y).string() + " ";
+        tiePoints += ossimString::toString(rect.ll().x).string() + "," + ossimString::toString(rect.ll().y).string();
+        tiePoints += "</coordinates>";
+        tiePoints += "</Image>";
+        tiePoints += "<Ground>";
+        tiePoints += "<coordinates>";
+        tiePoints += ossimString::toString(ul.lond()).string() + "," + ossimString::toString(ul.latd()).string() + " ";
+        tiePoints += ossimString::toString(ur.lond()).string() + "," + ossimString::toString(ur.latd()).string() + " ";
+        tiePoints += ossimString::toString(lr.lond()).string() + "," + ossimString::toString(lr.latd()).string() + " ";
+        tiePoints += ossimString::toString(ll.lond()).string() + "," + ossimString::toString(ll.latd()).string();
+        tiePoints += "</coordinates>";
+        tiePoints += "</Ground>";
+        tiePoints += "</TiePointSet>";
+
+	writeJsonKVP(outputString, "tiePoints", tiePoints, true, indent, path);
+        writeJsonKVP(outputString, "tiePointsPoly", tiePointsPoly, true, indent, path);
+	writeJsonKVP(outputString, "tiePointsCounterClockwisePoly", tiePointsCounterClockwisePoly, true, indent, path);	
       }
    }
 }
