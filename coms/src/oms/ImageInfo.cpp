@@ -996,7 +996,7 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
                          + ossimString::toString(rect.ul().x) + "))");
 
 	ossimString tiePoints = "";
-        tiePoints += "<TiePointSet version=\"1\">";
+        tiePoints += "<TiePointSet version=''1''>";
         tiePoints += "<Image>";
         tiePoints += "<coordinates>";
         tiePoints += ossimString::toString(rect.ul().x).string() + "," + ossimString::toString(rect.ul().y).string() + " ";
