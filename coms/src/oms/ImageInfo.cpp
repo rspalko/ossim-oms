@@ -1521,9 +1521,10 @@ void oms::ImageInfo::appendNormalizedMetadata(std::string& outputString, const o
       }
       organization = ossimString(kwl3.find("dted.dsi.producer_code"));
    }
-   else if(kwl3.find("tiff." + imagePrefix + "date_time"))
+   else if(kwl3.find("tiff." + imagePrefix + "date_time") || kwl3.find("jp2.tiff." + imagePrefix + "date_time"))
    {
       ossimString tiffDate(kwl3.find("tiff." + imagePrefix + "date_time"));
+      if (tiffDate.empty()) tiffDate = ossimString(kwl3.find("jp2.tiff." + imagePrefix + "date_time"));
       std::vector<ossimString> splitArray;
       tiffDate.split(splitArray, " ");
       if(splitArray.size() > 0)
