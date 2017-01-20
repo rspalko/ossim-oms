@@ -32,8 +32,11 @@
     <echo message="os.name = ${os.name}"/>
     <echo message="osg.home = ${osg.home}"/>
     <echo message="user.home = ${user.home}"/>
+    <artifact:remoteRepository id="remote.repository" url="${env.OSSIM_MAVEN_PROXY}" />
 
     <artifact:dependencies filesetId="dependency.fileset">
+      <remoteRepository refid="remote.repository" />
+
       <dependency groupId="org.apache.commons" artifactId="commons-compress" version="1.9"/>
       <dependency groupId="commons-lang" artifactId="commons-lang" version="2.6"/>
     </artifact:dependencies>
@@ -251,6 +254,7 @@
             <then>
               <cc outtype="shared" objdir="swig" outfile="${module.name}">
                   <compilerarg value="-D__STDC_CONSTANT_MACROS"/>
+                  <compilerarg value="--std=c++11"/>
                   <includepath>
                   <path location="swig" />
                   <path location="${jdk.home}/include" />
@@ -406,6 +410,7 @@
     <target name="mvn-install">
         <exec executable="mvn">
             <arg value="install:install-file"/>
+            <arg value="-Dmaven.repo.remote=${env.OSSIM_MAVEN_PROXY}"/>
             <arg value="-Dfile=../lib/${module.name}-${ossim.version}.jar"/>
             <arg value="-DgroupId=org.ossim"/>
             <arg value="-DartifactId=${module.name}"/>

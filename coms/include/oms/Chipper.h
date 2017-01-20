@@ -17,6 +17,7 @@
 #include <oms/Constants.h>
 #include <map>
 #include <string>
+#include <ossim/imaging/ossimImageData.h>
 
 class ossimChipperUtil;
 
@@ -152,6 +153,9 @@ namespace oms
                   const std::map<std::string,
                   std::string>& options=std::map<std::string,std::string>());
 
+      ossimRefPtr<ossimImageData> getChip(const std::map<std::string,
+                                                         std::string>& options=std::map<std::string,std::string>());
+
    private:
 
       /** @brief Hidden from use copy constructor. */
@@ -161,6 +165,7 @@ namespace oms
       const Chipper& operator=( const Chipper& rhs );
       
       ossimChipperUtil* m_chipper;
+
    };
 
 } // End of namespace oms.
