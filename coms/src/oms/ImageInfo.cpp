@@ -585,7 +585,7 @@ std::string oms::ImageInfo::getInfo() const
       ossimKeywordlist detailsKWL;
       bool hasKWL = false;
 
-      ossimRefPtr<ossimInfoBase> info = ossimInfoFactoryRegistry::instance()->create(thePrivateData->theFilename);
+      std::shared_ptr<ossimInfoBase> info = ossimInfoFactoryRegistry::instance()->create(thePrivateData->theFilename);
       if (info.valid())
       {
 	info->getKeywordlist(detailsKWL);
