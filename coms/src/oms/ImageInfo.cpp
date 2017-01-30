@@ -586,7 +586,7 @@ std::string oms::ImageInfo::getInfo() const
       bool hasKWL = false;
 
       std::shared_ptr<ossimInfoBase> info = ossimInfoFactoryRegistry::instance()->create(thePrivateData->theFilename);
-      if (info.valid())
+      if (info)
       {
 	info->getKeywordlist(detailsKWL);
 	hasKWL = true;
@@ -929,7 +929,7 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
       lr.changeDatum(wgs84.datum());
       ll.changeDatum(wgs84.datum());
       
-      groundGeometry += ("MULTIPOLYGON(((" + ossimString::toString(ul.lond()) + " "
+      groundGeometry += ("POLYGON((" + ossimString::toString(ul.lond()) + " "
                          + ossimString::toString(ul.latd()) + ","
                          + ossimString::toString(ur.lond()) + " "
                          + ossimString::toString(ur.latd()) + ","
@@ -938,9 +938,9 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
                          + ossimString::toString(ll.lond()) + " "
                          + ossimString::toString(ll.latd()) + ","
                          + ossimString::toString(ul.lond()) + " "
-                         + ossimString::toString(ul.latd()) + ")))");
+                         + ossimString::toString(ul.latd()) + "))");
 
-      groundGeometryCounterClockwise += ("MULTIPOLYGON(((" + ossimString::toString(ul.lond()) + " "
+      groundGeometryCounterClockwise += ("POLYGON((" + ossimString::toString(ul.lond()) + " "
                          + ossimString::toString(ul.latd()) + ","
                          + ossimString::toString(ll.lond()) + " "
                          + ossimString::toString(ll.latd()) + ","
@@ -949,7 +949,7 @@ void oms::ImageInfo::appendGeometryInformation(std::string& outputString,
                          + ossimString::toString(ur.lond()) + " "
                          + ossimString::toString(ur.latd()) + ","
                          + ossimString::toString(ul.lond()) + " "
-                         + ossimString::toString(ul.latd()) + ")))");
+                         + ossimString::toString(ul.latd()) + "))");
 
       groundShape += "\n\t\t\"groundShape\" : { \"type\" : \"polygon\", \"coordinates\" : [ [ [" + ossimString::toString(ul.lond()) + ", " + ossimString::toString(ul.latd()) + "], ["
 			+ ossimString::toString(ur.lond()) + ", " + ossimString::toString(ur.latd()) + "], ["
